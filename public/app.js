@@ -1,3 +1,7 @@
+/* jshint node: true */
+/* globals $:false */
+/* global window: false */
+
 'use strict';
 
 var learnjs = {};
@@ -13,12 +17,17 @@ learnjs.problems = [
   }
 ];
 
+learnjs.template = function(name) {
+  return $('.templates .' + name).clone();
+};
+
+
 learnjs.appOnReady = function() {
   window.onhashchange = function() {
     learnjs.showView(window.location.hash);
   };
   learnjs.showView(window.location.hash);
-}
+};
 
 learnjs.applyObject = function(obj, elem) {
   for (var key in obj) {
@@ -31,7 +40,7 @@ learnjs.flashElement = function(elem, content) {
     elem.html(content);
     elem.fadeIn();
   });
-}
+};
 
 learnjs.problemView = function(data) {
   var problemNumber = parseInt( data, 10 );
@@ -42,7 +51,7 @@ learnjs.problemView = function(data) {
   function checkAnswer() {
     var answer = view.find('.answer').val();
     var test = problemData.code.replace('__', answer) + '; problem();';
-    return eval(test);
+    return eval(test); // jshint ignore:line
   }
 
   function checkAnswerClick() {
@@ -58,7 +67,7 @@ learnjs.problemView = function(data) {
   view.find('.title').text('Problem #' + problemNumber);
   learnjs.applyObject(problemData, view);  
   return view;
-}
+};
 
 learnjs.showView = function(hash) {
   var routes = {
@@ -69,4 +78,4 @@ learnjs.showView = function(hash) {
   if (viewFn) {
     $('.view-container').empty().append(viewFn(hashParts[1]));
   }
-}
+};
